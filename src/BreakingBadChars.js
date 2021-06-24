@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ActivityIndicator, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, StatusBar, Button } from 'react-native';
 import Card from './compnents/Card';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import { addFavourites, removeFavourites } from './actions';
+import Heart from '../src/assets/icons/HEART.svg';
+import Heart_Filled from '../src/assets/icons/HEART_FILLED.svg';
 
 class BreakingBadChars extends Component {
 
     static navigationOptions = ({ navigation }) => ({
         title: 'The Breaking Bad',
-        headerTitleStyle: { color: '#18CA75' },
-        headerTintColor: '#18CA75',
+        headerTitleStyle: { color: 'white' },
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: 'black'
+        },
         headerRight: () => (
-            <TouchableOpacity style={{ padding: 10, backgroundColor: '#18CA75', marginRight: 10 }} onPress={() => navigation.navigate('FavouriteList')}>
-                <Text style={{ color: 'white' }}>Favourites</Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <TouchableOpacity style={{ padding: 10 }} onPress={() => navigation.navigate('SearchScreen')}>
+                    <Icon name="search" type={'FontAwesome'} size={25} color={'white'} />
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={1} style={{ padding: 10, marginRight: 10 }} onPress={() => navigation.navigate('FavouriteList')}>
+                    <Heart_Filled width={25} height={25} />
+                </TouchableOpacity>
+            </View>
         )
     });
 
@@ -61,68 +71,32 @@ class BreakingBadChars extends Component {
     }
 
     renderItem = ({ item }) => (
-        <Card style={styles.card}>
-            <Image resizeMode='stretch' style={styles.imageStyle}
-                source={{ uri: item.img }} />
-            <View style={{ height: '15%', paddingHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={styles.sectionTitle} onPress={() => this.props.navigation.navigate('CharDetails', { charDetails: item })}>{item.name}</Text>
-                <TouchableOpacity onPress={() => this.addToFavourite(item)}>
-                    <Icon name="heart" size={30} color={this.renderColor(item.char_id)} />
-                </TouchableOpacity>
+        <View style={{ flex: 1, flexDirection: 'column', marginHorizontal: 10, marginTop: 40, marginBottom: 10 }}>
+            <TouchableOpacity activeOpacity={0.5} onPress={() => this.props.navigation.navigate('CharDetails', { charDetails: item })}>
+                <Image source={{ uri: item.img }} style={styles.imageStyle} />
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ width: '80%' }}>
+                    <Text style={styles.titleStyle}>{item.name} </Text>
+                    <Text style={styles.subTitleStyle}>{item.nickname}</Text>
+                </View>
+                <View style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => this.addToFavourite(item)}>
+                        {(this.props.favourites.some(e => e.id === item.char_id)) ? <Heart_Filled width={25} height={25} /> : <Heart width={25} height={25} />}
+                    </TouchableOpacity>
+                </View>
             </View>
-        </Card>
+        </View>
     );
-
-    searchCharacter = () => {
-        const { text } = this.state
-
-        if (text) {
-            fetch(`https://www.breakingbadapi.com/api/characters?name=${text}`, {
-                method: 'GET',
-            })
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let updatedJson = []
-                    responseJson.map((item) => {
-                        item.isFavourite = false
-                        updatedJson.push(item)
-                    })
-                    console.log('updatedJson', updatedJson[0])
-
-                    this.setState({ allCharacters: updatedJson })
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        } else alert('Please enter text first')
-    }
-
-    renderColor = (id) => {
-        if (this.props.favourites.some(e => e.id === id)) {
-            return 'red'
-        } else return 'white'
-    }
 
     render() {
         const { allCharacters, text } = this.state
         return (
             <View style={styles.container}>
-                <View style={{ flexDirection: 'row', margin: 10, alignItems: 'center', justifyContent: 'center' }}>
-                    <View style={{ flex: 4 }}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text) => this.setState({ text })}
-                            value={text}
-                        />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <TouchableOpacity style={{ backgroundColor: '#18CA75', alignItems: 'center' }} onPress={() => this.searchCharacter()}>
-                            <Icon name="search" size={30} color={'white'} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <StatusBar backgroundColor="black" barStyle={'light-content'} />
                 {allCharacters ? <FlatList
                     data={allCharacters}
+                    numColumns={2}
                     renderItem={this.renderItem}
                     keyExtractor={item => item.char_id}
                 /> : null}
@@ -140,27 +114,27 @@ export default connect(mapStateToProps)(BreakingBadChars);
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20
-    },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
-        color: 'white',
-    },
-    card: {
-        height: 250,
-        width: '100%',
-        backgroundColor: '#18CA75',
-        marginTop: 15
+        justifyContent: 'center',
+        backgroundColor: 'black',
+        paddingHorizontal: 10
     },
     imageStyle: {
-        height: '85%',
-        width: '100%',
-        borderRadius: 10
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 220,
     },
     input: {
         height: 40,
         margin: 12,
         borderWidth: 1,
     },
+    titleStyle: {
+        color: 'white',
+        paddingTop: 10,
+        fontFamily: 'Roboto-Bold'
+    },
+    subTitleStyle: {
+        color: 'white',
+        fontFamily: 'Roboto-Light'
+    }
 });

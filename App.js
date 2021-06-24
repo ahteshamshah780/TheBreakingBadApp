@@ -7,6 +7,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from 'react-navigation-stack';
 import FavouriteList from './src/containers/FavouriteList';
 import CharDetails from './src/compnents/CharacterDetails';
+import SearchScreen from './src/compnents/SearchScreen';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -31,16 +32,33 @@ const AppNavigator = createStackNavigator({
     screen: FavouriteList,
     navigationOptions: {
       title: 'Favourite List',
-      headerTitleStyle: { color: '#18CA75' },
-      headerTintColor: '#18CA75',
+      headerTitleStyle: { color: 'white' },
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: 'black'
+      },
     },
   },
   CharDetails: {
     screen: CharDetails,
     navigationOptions: {
       title: 'Character Details',
-      headerTitleStyle: { color: '#18CA75' },
-      headerTintColor: '#18CA75',
+      headerTitleStyle: { color: 'white' },
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: 'black'
+      },
+    },
+  },
+  SearchScreen: {
+    screen: SearchScreen,
+    navigationOptions: {
+      title: 'Search Character',
+      headerTitleStyle: { color: 'white' },
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: 'black'
+      },
     },
   },
 },

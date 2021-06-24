@@ -12,22 +12,29 @@ const FavouriteList = (props) => {
     }
 
     const renderItem = ({ item }) => (
-        <Card style={styles.card}>
-            <Image resizeMode='stretch' style={styles.imageStyle}
-                source={{ uri: item.img }} />
-            <View style={{ height: '15%', paddingHorizontal: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Text style={styles.sectionTitle}>{item.name}</Text>
-                <TouchableOpacity onPress={() => removeFromFavourite(item.id)}>
-                    <Icon name="heart" size={30} color={item.isFavourite ? 'red' : 'white'} />
-                </TouchableOpacity>
+        <View style={{ flex: 1/2, flexDirection: 'column', marginHorizontal: 10, marginTop: 40, marginBottom: 10 }}>
+            <TouchableOpacity activeOpacity={1}>
+                <Image source={{ uri: item.img }} style={styles.imageStyle} />
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ width: '80%' }}>
+                    <Text style={styles.titleStyle}>{item.name} </Text>
+                    <Text style={styles.subTitleStyle}>{item.nickname}</Text>
+                </View>
+                <View style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => removeFromFavourite(item.id)}>
+                        <Icon name="heart" type={'FontAwesome'} size={25} color={'#18CA75'} />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </Card>
+        </View>
     );
 
     return (
         <View style={styles.container}>
             <FlatList
                 data={props.favourites}
+                numColumns={2}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
@@ -38,24 +45,22 @@ const FavouriteList = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 20
-    },
-    card: {
-        height: 250,
-        width: '100%',
-        backgroundColor: '#18CA75',
-        marginTop: 15
+        justifyContent: 'center',
+        backgroundColor: 'black',
+        paddingHorizontal: 10
     },
     imageStyle: {
-        height: '85%',
-        width: '100%',
-        borderRadius: 10
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 220,
     },
-    sectionTitle: {
-        fontSize: 24,
-        fontWeight: '600',
+    titleStyle: {
         color: 'white',
+        paddingTop: 10
     },
+    subTitleStyle: {
+        color: 'white'
+    }
 });
 
 const mapStateToProps = state => ({
