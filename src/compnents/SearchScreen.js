@@ -99,9 +99,7 @@ export default SearchScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
         backgroundColor: 'black',
-        // paddingHorizontal: 10
     },
     imageStyle: {
         justifyContent: 'center',

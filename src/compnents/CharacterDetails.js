@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground, Image, StatusBar } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -22,6 +22,7 @@ class CharDetails extends Component {
 
         return (
             <View style={styles.container}>
+                <StatusBar translucent backgroundColor='transparent' />
                 <View style={{ flex: 1 }}>
                     <ImageBackground style={styles.imageStyle} source={{ uri: charDetails.img }} >
                         <LinearGradient colors={['rgba(0,0,0,.5)', 'rgba(0,0,0,1)']} style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-end' }} >
@@ -58,16 +59,11 @@ export default CharDetails;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // paddingHorizontal: 20
     },
     imageStyle: {
         flex: 1,
         height: '100%',
-        width: '100%',
-        // position: 'relative',
-        // top: 0,
-        // left: 0,
-        backgroundColor: 'red'
+        width: '100%'
     },
     insideImageStyle: {
         height: 220,

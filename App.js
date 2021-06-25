@@ -42,12 +42,9 @@ const AppNavigator = createStackNavigator({
   CharDetails: {
     screen: CharDetails,
     navigationOptions: {
-      title: 'Character Details',
-      headerTitleStyle: { color: 'white' },
+      title: '',
       headerTintColor: 'white',
-      headerStyle: {
-        backgroundColor: 'black'
-      },
+      headerTransparent: true
     },
   },
   SearchScreen: {
